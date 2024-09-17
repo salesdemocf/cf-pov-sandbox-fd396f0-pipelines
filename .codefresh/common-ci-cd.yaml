@@ -115,6 +115,10 @@ steps:
         commands:
           - echo "Checking for Configuration Folder of ${{APPLICATION_NAME}}"
           - ls ${{APPLICATION_NAME}} || cf_export CONFIGURATION_FILES_NOT_FOUND=true;
+      when:
+      condition:
+        all:
+          mainBranch: '"${{CF_PULL_REQUEST_HEAD_BRANCH}}" == "main"'
 
     # Check ArgoCD Files
       check_argocd_files:
@@ -128,6 +132,10 @@ steps:
           - cat staging/${{APPLICATION_NAME}}.yaml || cf_export ARGOCD_FILES_NOT_FOUND=true
           - cat production/${{APPLICATION_NAME}}.yaml || cf_export ARGOCD_FILES_NOT_FOUND=true
     stage: seed
+    when:
+      condition:
+        all:
+          mainBranch: '"${{CF_PULL_REQUEST_HEAD_BRANCH}}" == "main"'
 
   seed:
     type: parallel
@@ -193,7 +201,7 @@ steps:
       condition:
         all:
           whenConfigurationFilesFound: 'includes("${{CONFIGURATION_FILES_NOT_FOUND}}", "{{CONFIGURATION_FILES_NOT_FOUND}}") == true'
-          maimBranch: '"${{CF_BRANCH}}" == "main"'
+          mainBranch: '"${{CF_PULL_REQUEST_HEAD_BRANCH}}" == "main"'
 
   check_for_untracked_changes:
     title: Checking for GIT Diff...
@@ -206,7 +214,7 @@ steps:
       condition:
         all:
           whenConfigurationFilesFound: 'includes("${{CONFIGURATION_FILES_NOT_FOUND}}", "{{CONFIGURATION_FILES_NOT_FOUND}}") == true'
-          maimBranch: '"${{CF_BRANCH}}" == "main"'
+          mainBranch: '"${{CF_PULL_REQUEST_HEAD_BRANCH}}" == "main"'
 
   commit_and_push:
     title: Committing Updated Development Overlay...
