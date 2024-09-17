@@ -118,7 +118,7 @@ steps:
         when:
           condition:
             all:
-              mainBranch: '"${{CF_PULL_REQUEST_HEAD_BRANCH}}" == "main"'
+              whenPRMerged: '"${{CF_PULL_REQUEST_MERGED}}" == "true"'
 
     # Check ArgoCD Files
       check_argocd_files:
@@ -134,7 +134,7 @@ steps:
         when:
           condition:
             all:
-              mainBranch: '"${{CF_PULL_REQUEST_HEAD_BRANCH}}" == "main"'
+              whenPRMerged: '"${{CF_PULL_REQUEST_MERGED}}" == "true"'
     stage: seed
 
   seed:
@@ -201,7 +201,7 @@ steps:
       condition:
         all:
           whenConfigurationFilesFound: 'includes("${{CONFIGURATION_FILES_NOT_FOUND}}", "{{CONFIGURATION_FILES_NOT_FOUND}}") == true'
-          mainBranch: '"${{CF_PULL_REQUEST_HEAD_BRANCH}}" == "main"'
+          whenPRMerged: '"${{CF_PULL_REQUEST_MERGED}}" == "true"'
 
   check_for_untracked_changes:
     title: Checking for GIT Diff...
@@ -214,7 +214,7 @@ steps:
       condition:
         all:
           whenConfigurationFilesFound: 'includes("${{CONFIGURATION_FILES_NOT_FOUND}}", "{{CONFIGURATION_FILES_NOT_FOUND}}") == true'
-          mainBranch: '"${{CF_PULL_REQUEST_HEAD_BRANCH}}" == "main"'
+          whenPRMerged: '"${{CF_PULL_REQUEST_MERGED}}" == "true"'
 
   commit_and_push:
     title: Committing Updated Development Overlay...
