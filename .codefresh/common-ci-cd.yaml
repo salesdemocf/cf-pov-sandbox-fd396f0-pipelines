@@ -96,9 +96,9 @@ steps:
       CF_GIT_REPO: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
       CF_GIT_BRANCH: ${{CF_REVISION}}
       CF_IMAGE: ${{IMAGE_REGISTRY_DOMAIN}}/${{IMAGE_REGISTRY_NAME}}/${{APPLICATION_NAME}}:${{CF_SHORT_REVISION}}
-      # CF_ISSUE_TRACKING_INTEGRATION: jira-integration-name
-      # CF_JIRA_MESSAGE: jira-message
-      # CF_JIRA_PROJECT_PREFIX: jira-project-prefix
+      CF_ISSUE_TRACKING_INTEGRATION: pov-sales-dev
+      CF_JIRA_MESSAGE: ${{CF_COMMIT_MESSAGE}}
+      CF_JIRA_PROJECT_PREFIX: POV
     stage: report
 
 # [Optional] - Application Creation
