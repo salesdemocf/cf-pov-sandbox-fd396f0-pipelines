@@ -116,9 +116,9 @@ steps:
           - echo "Checking for Configuration Folder of ${{APPLICATION_NAME}}"
           - ls ${{APPLICATION_NAME}} || cf_export CONFIGURATION_FILES_NOT_FOUND=true;
       when:
-      condition:
-        all:
-          mainBranch: '"${{CF_PULL_REQUEST_HEAD_BRANCH}}" == "main"'
+        condition:
+          all:
+            mainBranch: '"${{CF_PULL_REQUEST_HEAD_BRANCH}}" == "main"'
 
     # Check ArgoCD Files
       check_argocd_files:
@@ -131,11 +131,11 @@ steps:
           - cat development/${{APPLICATION_NAME}}.yaml || cf_export ARGOCD_FILES_NOT_FOUND=true
           - cat staging/${{APPLICATION_NAME}}.yaml || cf_export ARGOCD_FILES_NOT_FOUND=true
           - cat production/${{APPLICATION_NAME}}.yaml || cf_export ARGOCD_FILES_NOT_FOUND=true
+      when:
+        condition:
+          all:
+            mainBranch: '"${{CF_PULL_REQUEST_HEAD_BRANCH}}" == "main"'
     stage: seed
-    when:
-      condition:
-        all:
-          mainBranch: '"${{CF_PULL_REQUEST_HEAD_BRANCH}}" == "main"'
 
   seed:
     type: parallel
